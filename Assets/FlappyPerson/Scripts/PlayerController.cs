@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Death variable
-    public bool death = false;
+    public bool gameOver = false;
     
     //jumping
     public float jumpForce;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(jumpKey))
+        if (Input.GetKeyDown(jumpKey) && !gameOver)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour
     {
      if (collision.gameObject.CompareTag("wall"))
         {
-            death = true;
-            animator.SetBool("death", death);
+            gameOver = true;
+            animator.SetBool("gameOver", gameOver);
         }   
     }
 
