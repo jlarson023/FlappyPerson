@@ -6,24 +6,25 @@ public class PlayerController : MonoBehaviour
 {
     //Death variable
     public bool gameOver = false;
-    
     //jumping
     public float jumpForce;
     public KeyCode jumpKey;
     private Rigidbody rb;
-
     //Animation
     private Animator animator;
-
     //Particles
-    public ParticleSystem boosterFlames;
-
+    public ParticleSystem booster;
+    //Sound
+    private AudioSource playerAudio;
+    public AudioClip jumpSound;
+    public AudioClip crashSound;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(jumpKey) && !gameOver)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -41,7 +43,18 @@ public class PlayerController : MonoBehaviour
         {
             gameOver = true;
             animator.SetBool("gameOver", gameOver);
-        }   
+            booster.Stop();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
+
+        }
+     if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Game Over");
+            gameOver = true;
+            animator.SetBool("gameOver", gameOver);
+            booster.Stop();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
+        }
     }
 
 }
